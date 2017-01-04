@@ -1,0 +1,107 @@
+
+<div class="page-header">
+  <h2>Happenings (Admin)</h2>
+</div>
+<div class="btn btn-primary" (click)="createHappening = !createHappening;"><span class="glyphicon glyphicon-plus"></span> Happening erstellen</div>
+<br><br>
+<!--<h3>Neues Happening erstellen</h3>-->
+<div class="create-happening" *ngIf="createHappening"> 
+  <form class="form">
+    <div class="form-group">
+      <label for="inputTitle">Titel</label>
+      <input type="text" class="form-control" id="inputTitle" placeholder="Title" #happeningTitle>
+    </div>
+    <div class="form-group">
+      <label for="inputDate">Datum</label>
+      <input type="date" class="form-control" id="inputDate" placeholder="Datum" #happeningDate>
+    </div>
+    <div class="form-group">
+      <label for="inputLocation">Ort</label>
+      <input type="text" class="form-control" id="inputTitle" placeholder="Ort" #happeningLocation>
+    </div>
+    <div class="form-group">
+      <label for="inputDetails">Details</label>
+      <input type="text" class="form-control" id="inputTitle" placeholder="Details" #happeningDetails>
+    </div>
+    <div class="form-group">
+      <label for="inputLocation">Anzahl Plätze</label>
+      <input type="number" class="form-control" id="inputSlotsAvailable" placeholder="Anzahl Plätze" #happeningSlotsAvailable>
+    </div>
+
+    <button class="btn btn-primary" (click)="add(happeningTitle.value, happeningDate.value, happeningLocation.value, happeningSlotsAvailable.value, happeningDetails.value); createHappening = false;">
+    Hinzufügen
+  </button>
+  </form>
+</div>
+
+<table class="happenings table table-striped">
+
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Titel</th>
+      <th>Ort</th>
+      <th>Details</th>
+      <th>Datum</th>
+      <th>Anzahl Plätze</th>
+      <th>Reservierte Plätze</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let happening of happenings">
+      <td><span class="badge">{{happening._id}}</span></td>
+      <td>{{happening.title}}</td>
+      <td>{{happening.location}}</td>
+      <td>{{happening.details}}</td>
+      <td>{{happening.date}}</td>
+      <td>{{happening.slots_available}}</td>
+      <!--Use directive to count tokens from database-->
+      <td><span class="glyphicon glyphicon-flag">&nbsp;FIXME</span></td>
+      <td>
+        <button class="btn btn-default" title="Bearbeiten" [class.selected]="happening === selectedHappening" (click)="onSelect(happening)">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-default" title="Einladen" (click)="onInvite(happening)">
+          <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger" title="Löschen" (click)="delete(happening); $event.stopPropagation();" >
+          <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div *ngIf="selectedHappening">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{selectedHappening.title | uppercase}} ist ausgewählt</h3>
+    </div>
+    <div class="panel-body">
+      <form>
+        <div class="form-group col-md-4">
+          <label for="inputName">Name</label>
+          <input type="text" class="form-control" id="inputUpdateName" value="{{selectedHappening.name}}" #subscriberUpdateName>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputEmail">Email</label>
+          <input type="email" class="form-control" id="inputUpdateEmail" value="{{selectedHappening.email}}" #subscriberUpdateEmail>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputMissedEvents">Verpasste Happenings</label>
+          <input type="number" class="form-control" id="inputUpdateMissedEvents" value="{{selectedHappening.missed_events}}" #subscriberUpdateMissedEvents>
+        </div>
+        <button class="btn btn-primary" (click)="update(selectedHappening._id, subscriberUpdateName.value, subscriberUpdateEmail.value, subscriberUpdateMissedEvents.value);">
+          Ändern
+        </button>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
+<ul>
+  <li *ngFor="let subscriber of subscribers">{{subscriber.name}}</li>
+</ul>
+<hr>
+
+

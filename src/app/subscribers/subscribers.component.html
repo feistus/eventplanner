@@ -1,0 +1,73 @@
+<h2>Teilnehmer</h2>
+
+<table class="subscribers table table-striped">
+
+  <thead>
+    <tr>
+      <th>id</th>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Verpasste Happenings</th>
+      <th>Optionen</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let subscriber of subscribers">
+      <td><span class="badge">{{subscriber._id}}</span></td>
+      <td>{{subscriber.name}}</td>
+      <td>{{subscriber.email}}</td>
+      <td>{{subscriber.missed_events}}</td>
+      <td>
+        <button class="btn btn-default" title="Bearbeiten" [class.selected]="subscriber === selectedSubscriber" (click)="onSelect(subscriber)">
+          <span class="glyphicon glyphicon-wrench" aria-hidden="true"></span>
+        </button>
+        <button class="btn btn-danger" title="Löschen" (click)="delete(subscriber); $event.stopPropagation();" ><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div *ngIf="selectedSubscriber">
+  <div class="panel panel-info">
+    <div class="panel-heading">
+      <h3 class="panel-title">{{selectedSubscriber.name | uppercase}} ist ausgewählt</h3>
+    </div>
+    <div class="panel-body">
+      <form>
+        <div class="form-group col-md-4">
+          <label for="inputName">Name</label>
+          <input type="text" class="form-control" id="inputUpdateName" value="{{selectedSubscriber.name}}" #subscriberUpdateName>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputEmail">Email</label>
+          <input type="email" class="form-control" id="inputUpdateEmail" value="{{selectedSubscriber.email}}" #subscriberUpdateEmail>
+        </div>
+        <div class="form-group col-md-4">
+          <label for="inputMissedEvents">Verpasste Happenings</label>
+          <input type="number" class="form-control" id="inputUpdateMissedEvents" value="{{selectedSubscriber.missed_events}}" #subscriberUpdateMissedEvents>
+        </div>
+        <button class="btn btn-primary" (click)="update(selectedSubscriber._id, subscriberUpdateName.value, subscriberUpdateEmail.value, subscriberUpdateMissedEvents.value);">
+          Ändern
+        </button>
+      </form>
+    </div>
+  </div>
+  <hr>
+</div>
+
+<h3>Neuen Teilnehmer hinzufügen</h3>
+
+<form class="form-inline">
+  <div class="form-group">
+    <label class="sr-only" for="inputName">Name</label>
+    <input type="text" class="form-control" id="inputName" placeholder="Name" #subscriberName>
+  </div>
+  <div class="form-group">
+    <label class="sr-only" for="inputEmail">Email</label>
+    <input type="email" class="form-control" id="inputEmail" placeholder="Email" #subscriberEmail>
+  </div>
+  <button class="btn btn-primary" (click)="add(subscriberName.value, subscriberEmail.value); subscriberName.value=''; subscriberEmail.value=''; ">
+  Hinzufügen
+</button>
+</form>
+
+ 
